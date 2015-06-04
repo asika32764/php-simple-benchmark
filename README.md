@@ -8,6 +8,8 @@ php composer.phar create-project asika/simple-benchmark simple-benchmark 1.*
 cd simple-benchmark
 ```
 
+Or download a pre-compiled package [here](https://github.com/asika32764/php-simple-benchmark/releases/download/1.0.0/simple-benchmark.zip)
+
 ## Getting Started
 
 See usage by this command:

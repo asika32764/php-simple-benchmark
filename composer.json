@@ -1,4 +1,13 @@
 {
+    "name": "asika/simple-benchmark",
+    "type": "console",
+    "description": "PHP Simple Benchmark framework",
+    "keywords": ["benchmark", "cli"],
+    "homepage": "https://github.com/asika32764/php-simple-benchmark",
+    "license": "GPL-3.0+",
+    "require": {
+        "php": ">=5.3.10"
+    },
     "require": {
         "windwalker/profiler": "2.*@stable",
         "windwalker/console": "2.*@stable",

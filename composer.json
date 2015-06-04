@@ -1,0 +1,12 @@
+{
+    "require": {
+        "windwalker/profiler": "2.*@stable",
+        "windwalker/console": "2.*@stable",
+        "windwalker/environment": "2.*@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimpleBenchmark\\": "src/"
+        }
+    }
+}

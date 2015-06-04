@@ -3,7 +3,7 @@
 ## Installation via Composer
 
 ``` bash
-php composer.phar create-project asika/simple-benchmark 1.*
+php composer.phar create-project asika/simple-benchmark simple-benchmark 1.*
 
 cd simple-benchmark
 ```

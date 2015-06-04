@@ -27,7 +27,7 @@ class RunCommand extends Command
 	{
 		$file = $this->getArgument(0) or $this->error(new \RuntimeException('Please enter task name.'));
 
-		$target = SB_FILES . '/' . $file;
+		$target = SB_TASKS . '/' . $file;
 
 		if (!is_file($file))
 		{

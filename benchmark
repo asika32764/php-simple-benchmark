@@ -10,7 +10,7 @@
 include_once __DIR__ . '/vendor/autoload.php';
 
 define('SB_ROOT', realpath(__DIR__));
-define('SB_FILES', realpath(SB_ROOT . '/tasks'));
+define('SB_TASKS', realpath(SB_ROOT . '/tasks'));
 
 $console = new \SimpleBenchmark\Application\Application;
 

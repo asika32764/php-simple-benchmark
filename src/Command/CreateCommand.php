@@ -46,7 +46,7 @@ class CreateCommand extends Command
 			throw new \InvalidArgumentException('Please enter a task name.');
 		}
 
-		$dest = new \SplFileInfo(SB_FILES . '/' . $name . '.php');
+		$dest = new \SplFileInfo(SB_TASKS . '/' . $name . '.php');
 
 		if ($dest->isFile())
 		{

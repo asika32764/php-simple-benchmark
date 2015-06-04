@@ -38,14 +38,14 @@ class ListCommand extends Command
 	 */
 	protected function doExecute()
 	{
-		$files = glob(SB_FILES . DIRECTORY_SEPARATOR . '*');
+		$files = glob(SB_TASKS . DIRECTORY_SEPARATOR . '*');
 
 		$this->out()->out('Available files: ')
 			->out('-----------------------------------------');
 
 		foreach ($files as $file)
 		{
-			$this->out(sprintf('<info>%s</info>', str_replace(SB_FILES . DIRECTORY_SEPARATOR, '', $file)));
+			$this->out(sprintf('<info>%s</info>', str_replace(SB_TASKS . DIRECTORY_SEPARATOR, '', $file)));
 		}
 
 		return true;

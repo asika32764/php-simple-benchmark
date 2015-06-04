@@ -17,5 +17,16 @@ use Windwalker\Console\Console;
  */
 class Application extends Console
 {
+	protected $name = 'PHP Simple Benchmark Framework';
+
+	protected $description = 'Help of Simple Benchmark.';
+
+	protected $help = <<<HELP
+Use `<cmd>benchmark list</cmd>` to list all tasks.
+
+Use `<cmd>benchmark create TaskName</cmd>` to generate a new task sample file to /tasks folder.
+
+Use `<cmd>benchmark run TaskName [times]</cmd>` to run benchmark
+HELP;
 
 }

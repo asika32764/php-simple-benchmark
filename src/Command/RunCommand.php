@@ -19,10 +19,34 @@ use Windwalker\Profiler\Benchmark;
  */
 class RunCommand extends Command
 {
+	/**
+	 * Property name.
+	 *
+	 * @var  string
+	 */
 	protected $name = 'run';
 
+	/**
+	 * Property description.
+	 *
+	 * @var  string
+	 */
 	protected $description = 'Run benchmark';
 
+	/**
+	 * Property usage.
+	 *
+	 * @var  string
+	 */
+	protected $usage = '%s <cmd><task></cmd> [<cmd><times (10000)></cmd>] <option>[options]</option>';
+
+	/**
+	 * doExecute
+	 *
+	 * @return  boolean
+	 *
+	 * @throws \Exception
+	 */
 	protected function doExecute()
 	{
 		$file = $this->getArgument(0) or $this->error(new \RuntimeException('Please enter task name.'));
@@ -54,7 +78,9 @@ class RunCommand extends Command
 
 		$benchmark = $task->getBenchmark();
 
-		$this->out($benchmark->render());
+		$this->out()->out('<info>Benchmark Result</info>')
+			->out('---------------------------------------------')
+			->out($benchmark->render());
 
 		return true;
 	}

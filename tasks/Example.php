@@ -20,11 +20,11 @@ class Example extends \SimpleBenchmark\Task\AbstractTask
 	 */
 	protected function doExecute(\Windwalker\Profiler\Benchmark $benchmark)
 	{
-		$benchmark->addTask('task1', function()
+		$benchmark->addTask('task1-md5', function()
 		{
 			md5(uniqid());
 
-		})->addTask('task2', function()
+		})->addTask('task2-sha1', function()
 		{
 			sha1(uniqid());
 		});

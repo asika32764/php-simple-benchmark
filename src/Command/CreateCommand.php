@@ -33,6 +33,13 @@ class CreateCommand extends Command
 	protected $description = 'Create a task file.';
 
 	/**
+	 * Property usage.
+	 *
+	 * @var  string
+	 */
+	protected $usage = '%s <cmd><task name></cmd> <option>[option]</option>';
+
+	/**
 	 * doExecute
 	 *
 	 * @return  boolean

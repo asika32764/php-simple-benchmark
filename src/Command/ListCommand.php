@@ -32,6 +32,13 @@ class ListCommand extends Command
 	protected $description = 'List task files.';
 
 	/**
+	 * Property usage.
+	 *
+	 * @var  string
+	 */
+	protected $usage = '%s <option>[option]</option>';
+
+	/**
 	 * doExecute
 	 *
 	 * @return  boolean

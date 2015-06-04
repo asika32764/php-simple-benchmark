@@ -60,6 +60,8 @@ php benchmark create TaskName
 
 A class named `TaskName` will be generated to `/tasks` folder.
 
+Open `/tasks/TaskName.php` you will see:
+
 ``` php
 <?php
 /**

@@ -127,7 +127,7 @@ TaskName.php
 Run banchmark by this command:
 
 ``` bash
-php benchmark TaskName
+php benchmark run TaskName
 ```
 
 The output will be:
@@ -142,7 +142,7 @@ task2-sha1 => 0.31735110282898 s
 You can set times (Default is 10000) at second argument:
 
 ``` bash
-php benchmark TaskName 15000
+php benchmark run TaskName 15000
 ```
 
 ## Todo

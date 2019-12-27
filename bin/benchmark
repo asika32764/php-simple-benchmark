@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Part of simple-benchmark project.
+ *
+ * @copyright  Copyright (C) 2015 {ORGANIZATION}. All rights reserved.
+ * @license    GNU General Public License version 2 or later;
+ */
+
+use SimpleBenchmark\Application\Application;
+use SimpleBenchmark\Command\CreateCommand;
+use SimpleBenchmark\Command\ListCommand;
+use SimpleBenchmark\Command\RunCommand;
+
+include_once __DIR__ . '/../vendor/autoload.php';
+
+define('SB_ROOT', dirname(__DIR__));
+define('SB_TASKS', realpath(SB_ROOT . '/tasks'));
+
+$console = new Application();
+
+$console->addCommand(new RunCommand());
+$console->addCommand(new ListCommand());
+$console->addCommand(new CreateCommand());
+
+$console->execute();

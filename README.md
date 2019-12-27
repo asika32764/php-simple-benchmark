@@ -1,35 +1,31 @@
-# PHP Simple Benchmark framework
+# PHP Simple Benchmark CLI
 
 ## Installation via Composer
 
 ``` bash
-php composer.phar create-project asika/simple-benchmark simple-benchmark 1.*
-
-cd simple-benchmark
+composer global require asika/simple-benchmark
 ```
-
-Or download a pre-compiled package [here](https://github.com/asika32764/php-simple-benchmark/releases/download/1.0.0/simple-benchmark.zip)
 
 ## Getting Started
 
-See usage by this command:
+Type `benchmark` or `sb` in terminal.
 
 ``` bash
-php benchmark
+sb
 ```
 
 The output will be:
 
 ```
-PHP Simple Benchmark Framework - version: 1.0
+PHP Simple Benchmark Framework - version: 2.0.0-beta
 ------------------------------------------------------------
 
-[benchmark Help]
+[sb Help]
 
 Help of Simple Benchmark.
 
 Usage:
-  benchmark <command> [option]
+  sb <command> [option]
 
 
 Options:
@@ -42,92 +38,51 @@ Options:
 Commands:
 
   run       Run benchmark
-  list      List task files.
   create    Create a task file.
-
-Use `benchmark list` to list all tasks.
 
 Use `benchmark create TaskName` to generate a new task sample file to /tasks folder.
 
-Use `benchmark run TaskName [times]` to run benchmark
+Use `benchmark run TaskFile.php [times]` to run benchmark
 ```
 
-### Create A Task File
+### Create a Task File
 
-``` bash
-php benchmark create TaskName
+```bash
+sb create TaskName
 ```
 
-A class named `TaskName` will be generated to `/tasks` folder.
+A file named `TaskName.php` will be generated to current folder.
 
-Open `/tasks/TaskName.php` you will see:
+Open `TaskName.php` you will see:
 
-``` php
+```php
 <?php
-/**
- * Part of simple-benchmark project. 
- *
- * @copyright  Copyright (C) 2015 Lyra Soft. All rights reserved.
- * @license    GNU General Public License version 2 or later;
- */
 
-/**
- * The TaskName task.
- */
-class TaskName extends \SimpleBenchmark\Task\AbstractTask
-{
-	/**
-	 * Run your benchmark here.
-	 *
-	 * @param   \Windwalker\Profiler\Benchmark  $benchmark
-	 *
-	 * @return  void
-	 */
-	protected function doExecute(\Windwalker\Profiler\Benchmark $benchmark)
-	{
-		// Do your benchmark here.
-	}
-}
+/** @var \SimpleBenchmark\Benchmark $benchmark */
+
 ```
 
-You can do your benchmark in `doExecute()` method.
+You can do your benchmark by `addTask()`.
  
-``` php
-protected function doExecute(\Windwalker\Profiler\Benchmark $benchmark)
-{
-    $benchmark->addTask('task1-md5', function() {
-        md5(uniqid());
-    });
-    
-    $benchmark->addTask('task2-sha1', function() {
-        sha1(uniqid());
-    });
-}
-```
+```php
+<?php
 
-More detail please see: [Windwalker Benchmark package](https://github.com/ventoviro/windwalker-profiler)
+/** @var \SimpleBenchmark\Benchmark $benchmark */
+$benchmark->addTask('task1-md5', function() {
+    md5(uniqid());
+});
 
-### List Tasks
-
-``` bash
-php benchmark list
-```
-
-Your will get this output:
-
-```
-Available files:
------------------------------------------
-Example.php
-TaskName.php
+$benchmark->addTask('task2-sha1', function() {
+    sha1(uniqid());
+});
 ```
 
 ### Run Benchmark
 
-Run banchmark by this command:
+Run benchmark by this command:
 
 ``` bash
-php benchmark run TaskName
+sb run TaskName.php
 ```
 
 The output will be:
@@ -135,17 +90,20 @@ The output will be:
 ```
 Benchmark Result
 ---------------------------------------------
-task1-md5 => 0.31799101829529 s
-task2-sha1 => 0.31735110282898 s
+Run 10,000 times
+
+task1-md5:
+  - Time: 0.0104s
+  - Memory: 2048kb
+
+task2-sha1:
+  - Time: 0.0101s
+  - Memory: 2048kb
+
 ```
 
 You can set times (Default is 10000) at second argument:
 
 ``` bash
-php benchmark run TaskName 15000
+php benchmark run TaskName.php 15000
 ```
-
-## Todo
-
-Add memory support in profiler.
-

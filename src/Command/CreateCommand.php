@@ -10,6 +10,8 @@ namespace SimpleBenchmark\Command;
 
 use SimpleBenchmark\Helper\TemplateHelper;
 use Windwalker\Console\Command\Command;
+use Windwalker\Environment\Environment;
+use Windwalker\Environment\PhpHelper;
 
 /**
  * The RunCommand class.
@@ -51,8 +53,11 @@ class CreateCommand extends Command
         if (!$name) {
             throw new \InvalidArgumentException('Please enter a task name.');
         }
+        
+        $env = new Environment();
+        $dir = $env->getPlatform()->getWorkingDirectory();
 
-        $dest = new \SplFileInfo(SB_TASKS . '/' . $name . '.php');
+        $dest = new \SplFileInfo($dir . '/' . $name . '.php');
 
         if ($dest->isFile()) {
             throw new \RuntimeException(sprintf('File %s has exists.', $dest->getBasename()));

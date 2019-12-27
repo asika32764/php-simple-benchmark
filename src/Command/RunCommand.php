@@ -9,7 +9,6 @@
 namespace SimpleBenchmark\Command;
 
 use SimpleBenchmark\Benchmark;
-use SimpleBenchmark\Task\AbstractTask;
 use Windwalker\Console\Command\Command;
 
 /**
@@ -50,32 +49,21 @@ class RunCommand extends Command
      */
     protected function doExecute()
     {
-        $file = $this->getArgument(0) or $this->error(new \RuntimeException('Please enter task name.'));
-
-        $target = SB_TASKS . '/' . $file;
+        $file = $this->getArgument(0) or $this->error(new \RuntimeException('Please enter task file.'));
 
         if (!is_file($file)) {
-            $target .= '.php';
+            throw new \RuntimeException(sprintf('File %s not exists', $file));
         }
 
-        if (!is_file($target)) {
-            throw new \RuntimeException(sprintf('File %s not exists', $target));
-        }
+        $target = new \SplFileInfo($file);
 
-        $target = new \SplFileInfo($target);
+        $benchmark = new Benchmark($target->getBasename('.php'));
 
-        require_once $target->getPathname();
-
-        $class = $target->getBasename('.php');
-
-        /** @var AbstractTask $task */
-        $task = new $class(new Benchmark($class));
+        include $target->getPathname();
 
         $times = $this->getArgument(1, 10000);
 
-        $task->execute($times);
-
-        $benchmark = $task->getBenchmark();
+        $benchmark->execute($times);
 
         $this->out()->out('<info>Benchmark Result</info>')
             ->out('---------------------------------------------')

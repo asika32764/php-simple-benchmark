@@ -9,6 +9,8 @@
 namespace SimpleBenchmark\Application;
 
 use Windwalker\Console\Console;
+use Windwalker\Console\IO\IOInterface;
+use Windwalker\Structure\Structure;
 
 /**
  * The Application class.
@@ -17,15 +19,28 @@ use Windwalker\Console\Console;
  */
 class Application extends Console
 {
-    protected $name = 'PHP Simple Benchmark Framework';
+    protected $version = null;
+
+    protected $title = 'PHP Simple Benchmark Framework';
 
     protected $description = 'Help of Simple Benchmark.';
 
     protected $help = <<<HELP
-Use `<cmd>benchmark list</cmd>` to list all tasks.
-
 Use `<cmd>benchmark create TaskName</cmd>` to generate a new task sample file to /tasks folder.
 
-Use `<cmd>benchmark run TaskName [times]</cmd>` to run benchmark
+Use `<cmd>benchmark run TaskFile.php [times]</cmd>` to run benchmark
 HELP;
+
+    /**
+     * Application constructor.
+     *
+     * @param  IOInterface|null  $io
+     * @param  Structure|null    $config
+     */
+    public function __construct(IOInterface $io = null, Structure $config = null)
+    {
+        $this->version = trim(file_get_contents(__DIR__ . '/../../VERSION'));
+
+        parent::__construct($io, $config);
+    }
 }

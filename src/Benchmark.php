@@ -11,7 +11,6 @@ namespace SimpleBenchmark;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
-use Windwalker\Profiler\Profiler;
 
 /**
  * The Benchmark class.

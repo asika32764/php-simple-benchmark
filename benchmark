@@ -14,7 +14,7 @@ use SimpleBenchmark\Command\RunCommand;
 
 include_once __DIR__ . '/../vendor/autoload.php';
 
-define('SB_ROOT', dirname(__DIR__));
+define('SB_ROOT', realpath(__DIR__));
 define('SB_TASKS', realpath(SB_ROOT . '/tasks'));
 
 $console = new Application();

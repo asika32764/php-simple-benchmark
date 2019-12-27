@@ -19,7 +19,9 @@
     "config": {
         "platform": {
             "php": "5.6"
-        },
-        "bin-dir": "bin"
-    }
+        }
+    },
+    "bin": [
+        "benchmark"
+    ]
 }

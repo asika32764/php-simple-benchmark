@@ -11,15 +11,15 @@
  */
 class {{task_name}} extends \SimpleBenchmark\Task\AbstractTask
 {
-	/**
-	 * Run your benchmark here.
-	 *
-	 * @param   \Windwalker\Profiler\Benchmark  $benchmark
-	 *
-	 * @return  void
-	 */
-	protected function doExecute(\Windwalker\Profiler\Benchmark $benchmark)
-	{
-		// Do your benchmark here.
-	}
+    /**
+     * Run your benchmark here.
+     *
+     * @param   \SimpleBenchmark\Benchmark  $benchmark
+     *
+     * @return  void
+     */
+    protected function doExecute(\SimpleBenchmark\Benchmark $benchmark)
+    {
+        // Do your benchmark here.
+    }
 }

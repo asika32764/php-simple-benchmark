@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /**
  * Part of simple-benchmark project.
  *
@@ -7,18 +8,26 @@
  * @license    GNU General Public License version 2 or later;
  */
 
-use SimpleBenchmark\Application\Application;
 use SimpleBenchmark\Command\CreateCommand;
 use SimpleBenchmark\Command\RunCommand;
+use Symfony\Component\Console\Application;
 
-include_once __DIR__ . '/../../../vendor/autoload.php';
+$autoload = __DIR__ . '/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    $autoload = __DIR__ . '/../../../vendor/autoload.php';
+}
+
+include $autoload;
 
 define('SB_ROOT', realpath(__DIR__));
 define('SB_TASKS', realpath(SB_ROOT . '/tasks'));
 
 $console = new Application();
+$console->setName('PHP Simple Benchmark Framework');
+$console->setVersion(file_get_contents(__DIR__ . '/VERSION'));
 
-$console->addCommand(new RunCommand());
-$console->addCommand(new CreateCommand());
+$console->add(new CreateCommand());
+$console->add(new RunCommand());
 
-$console->execute();
+$console->run();

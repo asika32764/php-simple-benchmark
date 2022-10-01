@@ -9,68 +9,56 @@
 namespace SimpleBenchmark\Command;
 
 use SimpleBenchmark\Benchmark;
-use Windwalker\Console\Command\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The RunCommand class.
  *
  * @since  {DEPLOY_VERSION}
  */
+#[AsCommand(
+    name: 'run',
+    description: 'Run benchmark'
+)]
 class RunCommand extends Command
 {
-    /**
-     * Property name.
-     *
-     * @var  string
-     */
-    protected $name = 'run';
-
-    /**
-     * Property description.
-     *
-     * @var  string
-     */
-    protected $description = 'Run benchmark';
-
-    /**
-     * Property usage.
-     *
-     * @var  string
-     */
-    protected $usage = '%s <cmd><task></cmd> [<cmd><times (10000)></cmd>] <option>[options]</option>';
-
-    /**
-     * doExecute
-     *
-     * @return  boolean
-     *
-     * @throws \Exception
-     * @throws \Throwable
-     */
-    protected function doExecute()
+    protected function configure()
     {
-        $file = $this->getArgument(0) or $this->error(new \RuntimeException('Please enter task file.'));
+        parent::configure();
 
-        if (!is_file($file)) {
-            throw new \RuntimeException(sprintf('File %s not exists', $file));
-        }
+        $this->addArgument('file', InputArgument::REQUIRED, 'The task file name.');
+        $this->addArgument('loop', InputArgument::OPTIONAL, 'The loop times', 10000);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $file = $input->getArgument('file');
 
         $target = new \SplFileInfo($file);
 
         $benchmark = new Benchmark($target->getBasename('.php'));
 
+        if (!is_file($target->getPathname())) {
+            throw new \RuntimeException('No such file: ' . $target->getPathname());
+        }
+
         include $target->getPathname();
 
-        $times = $this->getArgument(1, 10000);
+        $times = (int) $input->getArgument('loop');
 
         $benchmark->execute($times);
 
-        $this->out()->out('<info>Benchmark Result</info>')
-            ->out('---------------------------------------------')
-            ->out('Run ' . number_format($times) . ' times')
-            ->out()
-            ->out($benchmark->render());
+        $output->writeln('');
+        $output->writeln('<info>Benchmark Result</info>');
+        $output->writeln('---------------------------------------------');
+        $output->writeln('Run ' . number_format($times) . ' times');
+        $output->writeln('');
+        $output->writeln($benchmark->render());
 
-        return true;
+        return Command::SUCCESS;
     }
 }

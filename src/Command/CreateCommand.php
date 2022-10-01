@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of simple-benchmark project.
  *
@@ -9,53 +10,32 @@
 namespace SimpleBenchmark\Command;
 
 use SimpleBenchmark\Helper\TemplateHelper;
-use Windwalker\Console\Command\Command;
-use Windwalker\Environment\Environment;
-use Windwalker\Environment\PhpHelper;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The RunCommand class.
  *
  * @since  {DEPLOY_VERSION}
  */
+#[AsCommand(
+    name: 'create',
+    description: 'Create a task file.',
+)]
 class CreateCommand extends Command
 {
-    /**
-     * Property name.
-     *
-     * @var  string
-     */
-    protected $name = 'create';
-
-    /**
-     * Property description.
-     *
-     * @var  string
-     */
-    protected $description = 'Create a task file.';
-
-    /**
-     * Property usage.
-     *
-     * @var  string
-     */
-    protected $usage = '%s <cmd><task name></cmd> <option>[option]</option>';
-
-    /**
-     * doExecute
-     *
-     * @return  boolean
-     */
-    protected function doExecute()
+    protected function configure()
     {
-        $name = $this->getArgument(0);
+        $this->addArgument('name', InputArgument::REQUIRED);
+    }
 
-        if (!$name) {
-            throw new \InvalidArgumentException('Please enter a task name.');
-        }
-        
-        $env = new Environment();
-        $dir = $env->getPlatform()->getWorkingDirectory();
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $name = $input->getArgument('name');
+        $dir = getcwd();
 
         $dest = new \SplFileInfo($dir . '/' . $name . '.php');
 
@@ -65,12 +45,12 @@ class CreateCommand extends Command
 
         $template = file_get_contents(SB_ROOT . '/resources/templates/task_template.tpl');
 
-        $template = TemplateHelper::parseVariable($template, array('task_name' => $name));
+        $template = TemplateHelper::parseVariable($template, ['task_name' => $name]);
 
         file_put_contents($dest->getPathname(), $template);
 
-        $this->out('Written file at: ' . $dest->getPathname());
+        $output->writeln('Written file at: ' . $dest->getPathname());
 
-        return true;
+        return Command::SUCCESS;
     }
 }

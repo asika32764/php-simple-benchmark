@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of simple-benchmark project.
  *
@@ -7,8 +8,17 @@
  */
 
 /** @var \SimpleBenchmark\Benchmark $benchmark */
-$benchmark->addTask('task1-md5', function () {
-    md5(uniqid());
-})->addTask('task2-sha1', function () {
-    sha1(uniqid());
-});
+
+$benchmark->addTask(
+    'task1-md5',
+    function () {
+        md5(uniqid());
+    }
+);
+
+$benchmark->addTask(
+    'task2-sha1',
+    function () {
+        sha1(uniqid());
+    }
+);

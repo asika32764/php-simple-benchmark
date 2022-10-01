@@ -19,89 +19,89 @@ use Symfony\Component\Stopwatch\StopwatchEvent;
  */
 class Benchmark
 {
-    const SECOND = 1;
+    public const SECOND = 1;
 
-    const MILLI_SECOND = 1000;
+    public const MILLI_SECOND = 1000;
 
-    const MICRO_SECOND = 1000000;
+    public const MICRO_SECOND = 1000000;
 
-    const SORT_ASC = 'asc';
+    public const SORT_ASC = 'asc';
 
-    const SORT_DESC = 'desc';
+    public const SORT_DESC = 'desc';
 
     /**
      * Property profiler.
      *
-     * @var  Stopwatch
+     * @var  Stopwatch|null
      */
-    protected $stopwatch = null;
+    protected ?Stopwatch $stopwatch = null;
 
     /**
      * Property name.
      *
      * @var  string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * Property times.
      *
      * @var  int
      */
-    protected $times = 100;
+    protected int $times = 100;
 
     /**
      * Property tasks.
      *
      * @var  array
      */
-    protected $tasks = [];
+    protected array $tasks = [];
 
     /**
      * Property results.
      *
      * @var  array
      */
-    protected $results = [];
+    protected array $results = [];
 
     /**
      * Property timeFormat.
      *
      * @var integer
      */
-    protected $format = 1;
+    protected int $format = 1;
 
     /**
      * Property renderHandler.
      *
      * @var \Closure
      */
-    protected $renderOneHandler;
+    protected ?\Closure $renderOneHandler = null;
 
     /**
      * Class init.
      *
-     * @param string    $name
-     * @param Stopwatch  $stopwatch
-     * @param int       $times
+     * @param  string|null     $name
+     * @param  Stopwatch|null  $stopwatch
+     * @param  int             $times
      */
-    public function __construct($name = null, Stopwatch $stopwatch = null, $times = 100)
+    public function __construct(?string $name = null, Stopwatch $stopwatch = null, int $times = 100)
     {
         $name = $name ?: 'benchmark-' . uniqid();
 
         $this->stopwatch = $stopwatch ?: new Stopwatch(true);
-        $this->name      = $name;
+        $this->name = $name;
         $this->times = $times;
     }
 
     /**
      * setTimeFormat
      *
-     * @param int $format
+     * @param  int  $format
      *
      * @return  static
      */
-    public function setTimeFormat($format = self::SECOND)
+    public function setTimeFormat(int $format = self::SECOND): static
     {
         $this->format = $format;
 
@@ -111,13 +111,13 @@ class Benchmark
     /**
      * addTask
      *
-     * @param string   $name
-     * @param callable $callback
+     * @param  string    $name
+     * @param  callable  $callback
      *
-     * @throws \InvalidArgumentException
      * @return  static
+     * @throws \InvalidArgumentException
      */
-    public function addTask($name, $callback)
+    public function addTask(string $name, callable $callback): static
     {
         if (!is_callable($callback)) {
             throw new \InvalidArgumentException('Task should be a callback.');
@@ -131,11 +131,11 @@ class Benchmark
     /**
      * run
      *
-     * @param integer $times
+     * @param  integer  $times
      *
      * @return  $this
      */
-    public function execute($times = null)
+    public function execute(int $times = null): static
     {
         $times = $times ?: $this->times;
 
@@ -149,13 +149,13 @@ class Benchmark
     /**
      * runTask
      *
-     * @param string   $name
-     * @param callable $callback
-     * @param integer  $times
+     * @param  string    $name
+     * @param  callable  $callback
+     * @param  integer   $times
      *
      * @return  $this
      */
-    protected function run($name, callable $callback, $times)
+    protected function run(string $name, callable $callback, int $times): static
     {
         $this->stopwatch->start($name);
 
@@ -173,11 +173,11 @@ class Benchmark
     /**
      * Method to get property Results
      *
-     * @param string $sort Null, desc or asc.
+     * @param ?string  $sort  Null, desc or asc.
      *
      * @return  StopwatchEvent[]
      */
-    public function getResults($sort = null)
+    public function getResults(?string $sort = null): array
     {
         $results = $this->results;
 
@@ -193,11 +193,11 @@ class Benchmark
     /**
      * Method to get property Results
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return  StopwatchEvent
      */
-    public function getResult($name)
+    public function getResult(string $name): StopwatchEvent
     {
         return $this->results[$name];
     }
@@ -205,16 +205,16 @@ class Benchmark
     /**
      * renderResult
      *
-     * @param string $name
-     * @param bool   $round
+     * @param  string  $name
+     * @param  bool    $round
      *
      * @return  string
      */
-    public function renderOne($name, $round = false)
+    public function renderOne(string $name, bool $round = false): string
     {
         $result = $this->getResult($name);
 
-        if ($this->renderOneHandler instanceof \Closure) {
+        if ($this->renderOneHandler) {
             $closure = $this->renderOneHandler;
 
             return $closure($name, $result, $round, $this->format);
@@ -239,12 +239,12 @@ class Benchmark
         //         break;
         // }
 
-        $time = $result->getDuration() / 1000;
+        $time = $result->getDuration();
         $memory = $result->getMemory() / 1024;
 
         return <<<EOL
 {$name}:
-  - Time: {$time}s
+  - Time: {$time}ms
   - Memory: {$memory}kb
 
 EOL;
@@ -253,13 +253,13 @@ EOL;
     /**
      * renderResult
      *
-     * @param bool   $round
-     * @param string $sort
-     * @param bool   $html
+     * @param  bool     $round
+     * @param  ?string  $sort
+     * @param  bool     $html
      *
      * @return  string
      */
-    public function render($round = false, $sort = null, $html = false)
+    public function render(bool $round = false, ?string $sort = null, bool $html = false): string
     {
         $output = [];
 
@@ -277,7 +277,7 @@ EOL;
      *
      * @return  int
      */
-    public function getTimes()
+    public function getTimes(): int
     {
         return $this->times;
     }
@@ -285,11 +285,11 @@ EOL;
     /**
      * Method to set property times
      *
-     * @param   int $times
+     * @param  int  $times
      *
      * @return  static  Return self to support chaining.
      */
-    public function setTimes($times)
+    public function setTimes(int $times): static
     {
         $this->times = $times;
 
@@ -299,9 +299,9 @@ EOL;
     /**
      * Method to get property RenderHandler
      *
-     * @return  \Closure
+     * @return  \Closure|null
      */
-    public function getRenderOneHandler()
+    public function getRenderOneHandler(): ?\Closure
     {
         return $this->renderOneHandler;
     }
@@ -309,11 +309,11 @@ EOL;
     /**
      * Method to set property renderHandler
      *
-     * @param   \Closure $renderOneHandler
+     * @param  \Closure|null  $renderOneHandler
      *
      * @return  static  Return self to support chaining.
      */
-    public function setRenderOneHandler(\Closure $renderOneHandler)
+    public function setRenderOneHandler(?\Closure $renderOneHandler): static
     {
         $this->renderOneHandler = $renderOneHandler;
 

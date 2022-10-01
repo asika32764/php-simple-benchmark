@@ -26,19 +26,19 @@ class TemplateHelper
      *
      * @return  string Replaced template.
      */
-    public static function parseVariable($string, $data = array(), $tags = array('{{', '}}'))
+    public static function parseVariable(string $string, array $data = [], array $tags = ['{{', '}}']): string
     {
-        $defaultTags = array('{{', '}}');
+        $defaultTags = ['{{', '}}'];
 
         $tags = (array) $tags + $defaultTags;
 
-        list($begin, $end) = $tags;
+        [$begin, $end] = $tags;
 
         $regex = preg_quote($begin) . '\s*(.+?)\s*' . preg_quote($end);
 
         return preg_replace_callback(
             chr(1) . $regex . chr(1),
-            function ($match) use ($data) {
+            static function ($match) use ($data) {
                 $return = static::getByPath($data, $match[1]);
                 if (is_array($return) || is_object($return)) {
                     return print_r($return, 1);
@@ -63,13 +63,13 @@ class TemplateHelper
      *
      * @since   2.0
      */
-    public static function getByPath($data, $paths, $separator = '.')
+    public static function getByPath(mixed $data, array|string $paths, string $separator = '.'): mixed
     {
         if (empty($paths)) {
             return null;
         }
 
-        $args    = is_array($paths) ? $paths : explode($separator, $paths);
+        $args = is_array($paths) ? $paths : explode($separator, $paths);
         $dataTmp = $data;
 
         foreach ($args as $arg) {
